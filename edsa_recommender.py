@@ -33,11 +33,20 @@ import pandas as pd
 import numpy as np
 import os
 import ast
+
 # Custom Libraries
 from utils.data_loader import load_movie_titles
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
 #from streamlit_extras.stateful_button import button as stateful_button
+
+
+
+# # Use the obtained information as needed
+# st.write("App Mode:", app_mode)
+# st.write("Command Line Args:", command_line_args)
+
+
 
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
@@ -382,29 +391,7 @@ def main():
         # Display the fourth image
         st.image('resources/imgs/Image4.jpg', use_column_width=True)
 
-    # if st.session_state.page_selection == "Analysis":
-    #     st.title('Exploratory Data Analysis')
-
-    #     if st.checkbox("ratings"):
-    #         st.subheader("Movie ratings")
-    #         img_path = os.path.join("resources", "imgs", "rating.jpg")
-    #         st.image(img_path, use_column_width=True)
-        
-    #     if st.checkbox("genres"):
-    #         st.subheader("Top Genres")
-    #         img_path = os.path.join("resources", "imgs", "top_genres.jpg")
-    #         st.image(img_path, use_column_width=True)
-
-    #     if st.checkbox("tags"):
-    #         st.subheader("Top tags")
-    #         img_path = os.path.join("resources", "imgs", "top_tags.jpg")
-    #         st.image(img_path, use_column_width=True)
-
-    #     if st.checkbox("cast"):
-    #         st.subheader("Popular cast")
-    #         img_path = os.path.join("resources", "imgs", "cast.jpg")
-    #         st.image(img_path, use_column_width=True)
-
+   
     
 
     if st.session_state.page_selection == "Solution Overview":
@@ -417,7 +404,8 @@ def main():
         initialize_lists()
         movie_list_page()
     elif st.session_state.page_selection == "Rating & Review":
-        rating_page()    
+        rating_page()
+
 
 if __name__ == '__main__':
     main()

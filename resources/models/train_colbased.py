@@ -9,16 +9,31 @@
 
 """
 import pickle
-pip install numpy
+
 
 # Script dependencies
 import pandas as pd
 import surprise
 from surprise import SVD
 
+
+
 # Importing datasets
 ratings = pd.read_csv('ratings.csv')
 ratings.drop('timestamp',axis=1,inplace=True)
+
+import streamlit as st
+
+# Using the script_run_ctx context manager
+with st.script_run_ctx():
+    # Access information about the running script
+    app_mode = st.script_request_queue.RerunData.Mode
+    command_line_args = st.script_request_queue.get_request_nowait()
+
+# Use the obtained information as needed
+st.write("App Mode:", app_mode)
+st.write("Command Line Args:", command_line_args)
+
 
 def svd_pp(save_path):
     # Check the range of the rating

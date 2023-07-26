@@ -47,7 +47,9 @@ ratings_df.drop(['timestamp'], axis=1,inplace=True)
 #movies_df['genres'] = movies_df['genres'].apply(lambda x: '|'.join(ast.literal_eval(x)))
 #movies_df['genres'] = movies_df['genres'].apply(literal_eval).apply(lambda x: [item['name'] for item in x] if isinstance(x, list) else [])
 # We make use of an SVD model trained on a subset of the MovieLens 10k dataset.
-model=pickle.load(open('resources/models/SVD.pkl', 'rb'))
+model_path = 'resources/models/SVD.pkl'
+model = pickle.load(open(model_path, 'rb'))
+
 
 def prediction_item(item_id):
     """Map a given favourite movie to users within the
@@ -148,3 +150,5 @@ def collab_model(movie_list,top_n=10):
         recommended_movies.append((movies_df[movies_df['movieId'] == movie_id]['title'].values[0],genres,predicted_rating))
         
     return recommended_movies
+
+

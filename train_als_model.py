@@ -4,6 +4,8 @@ import numpy as np
 import pickle
 from surprise import SVD, Reader, Dataset
 
+
+
 def train_als_model():
     # Load the ratings data
     ratings = pd.read_csv('resources/data/ratings.csv')
