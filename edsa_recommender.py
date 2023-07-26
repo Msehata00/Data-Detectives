@@ -259,7 +259,7 @@ def main():
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
     #page_options = ["Welcome","Recommender System","Analysis","Solution Overview",'MovieList']
-    page_options = ["Welcome", "Recommender System", "Analysis", "Solution Overview", "MovieList","Rating & Review"]
+    page_options = ["Welcome", "Recommender System", "Solution Overview", "MovieList","Rating & Review"]
     st.session_state.page_selection = st.sidebar.selectbox("Choose Option", page_options)
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -382,28 +382,28 @@ def main():
         # Display the fourth image
         st.image('resources/imgs/Image4.jpg', use_column_width=True)
 
-    if st.session_state.page_selection == "Analysis":
-        st.title('Exploratory Data Analysis')
+    # if st.session_state.page_selection == "Analysis":
+    #     st.title('Exploratory Data Analysis')
 
-        if st.checkbox("ratings"):
-            st.subheader("Movie ratings")
-            img_path = os.path.join("resources", "imgs", "rating.jpg")
-            st.image(img_path, use_column_width=True)
+    #     if st.checkbox("ratings"):
+    #         st.subheader("Movie ratings")
+    #         img_path = os.path.join("resources", "imgs", "rating.jpg")
+    #         st.image(img_path, use_column_width=True)
         
-        if st.checkbox("genres"):
-            st.subheader("Top Genres")
-            img_path = os.path.join("resources", "imgs", "top_genres.jpg")
-            st.image(img_path, use_column_width=True)
+    #     if st.checkbox("genres"):
+    #         st.subheader("Top Genres")
+    #         img_path = os.path.join("resources", "imgs", "top_genres.jpg")
+    #         st.image(img_path, use_column_width=True)
 
-        if st.checkbox("tags"):
-            st.subheader("Top tags")
-            img_path = os.path.join("resources", "imgs", "top_tags.jpg")
-            st.image(img_path, use_column_width=True)
+    #     if st.checkbox("tags"):
+    #         st.subheader("Top tags")
+    #         img_path = os.path.join("resources", "imgs", "top_tags.jpg")
+    #         st.image(img_path, use_column_width=True)
 
-        if st.checkbox("cast"):
-            st.subheader("Popular cast")
-            img_path = os.path.join("resources", "imgs", "cast.jpg")
-            st.image(img_path, use_column_width=True)
+    #     if st.checkbox("cast"):
+    #         st.subheader("Popular cast")
+    #         img_path = os.path.join("resources", "imgs", "cast.jpg")
+    #         st.image(img_path, use_column_width=True)
 
     
 
