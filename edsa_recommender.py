@@ -33,7 +33,10 @@ import pandas as pd
 import numpy as np
 import os
 import ast
+import time
+import sys
 
+from cometML import Experiment, log_metrics, log_model
 # Custom Libraries
 from utils.data_loader import load_movie_titles
 from recommenders.collaborative_based import collab_model
@@ -42,10 +45,12 @@ from recommenders.content_based import content_model
 
 
 
+
 # # Use the obtained information as needed
 # st.write("App Mode:", app_mode)
 # st.write("Command Line Args:", command_line_args)
 
+experiment = Experiment(api_key="5GQUeJbYop4ZaqBrtCQ12YaXh", project_name="unsupervised", workspace="vascoeti")
 
 
 # Data Loading
@@ -235,10 +240,45 @@ def movie_list_page():
 
 ###############
 # Function to add a movie to the DataFrame
+# Function to load the data and create a CometML experiment
+# Function to load the data and create a CometML experiment
+def load_data_and_experiment(sys, fav_movies):
+    # Load data and initialize lists
+    title_list = load_movie_titles('resources/data/movies.csv')
+    initialize_lists()
 
+    # App declaration
+    st.write("# Movie Recommender Engine")
+    st.write("### EXPLORE Data Science Academy Unsupervised Predict")
+    st.image('resources/imgs/Image_header.png', use_column_width=True)
+
+    # ... (Rest of the code for the recommender system)
+
+    # Create a CometML experiment and log metrics and model
+    if sys == 'Content Based Filtering':
+        if st.button("Recommend"):
+            with st.spinner('Crunching the numbers...'):
+                start_time = time.time()
+                top_recommendations = content_model(movie_list=fav_movies, top_n=10)
+                recommendation_time = time.time() - start_time
+
+                # Log metrics in the experiment
+                experiment.log_metric("Number of Recommendations", len(top_recommendations))
+                experiment.log_metric("Recommendation Time", recommendation_time)
+
+                # Log the trained model
+                model = content_model(fav_movies, top_n=10)  # Assuming you return the trained model from content_model()
+                experiment.log_model(model, "Content-Based Model")
+
+                st.title("We think you'll like:")
+                for i, j in enumerate(top_recommendations):
+                    st.subheader(str(i + 1) + '. ' + j)
    
 # App declaration
 def main():
+    
+    movies_list = []
+
     ##################################
     if "watchlist" not in st.session_state:
         st.session_state.watchlist = pd.DataFrame(columns=["Title", "Category"])
@@ -283,6 +323,7 @@ def main():
         sys = st.radio("Select an algorithm",
                        ('Content Based Filtering',
                         'Collaborative Based Filtering'))
+        
 
         # User-based preferences
         st.write('### Enter Your Three Favorite Movies')
@@ -381,7 +422,6 @@ def main():
         
         Happy movie watching!
         """)
-
         # Display the second image
         st.image('resources/imgs/Image2.jpg', use_column_width=True)
         
@@ -392,8 +432,7 @@ def main():
         st.image('resources/imgs/Image4.jpg', use_column_width=True)
 
    
-    
-
+        
     if st.session_state.page_selection == "Solution Overview":
         st.title("Solution Overview")
         st.write("Describe your winning approach on this page")
@@ -405,6 +444,8 @@ def main():
         movie_list_page()
     elif st.session_state.page_selection == "Rating & Review":
         rating_page()
+ 
+    
 
 
 if __name__ == '__main__':
