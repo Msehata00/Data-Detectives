@@ -33,12 +33,14 @@
 import pandas as pd
 import numpy as np
 import pickle
+from comet_ml import Experiment 
 import copy
 from surprise import Reader, Dataset
 from surprise import SVD, NormalPredictor, BaselineOnly, KNNBasic, NMF
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 #from ast import literal_eval
+
 import ast
 # Importing data
 movies_df = pd.read_csv('resources/data/movies.csv',sep = ',')
@@ -123,7 +125,7 @@ def collab_model(movie_list,top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
-
+  
     # Load the pre-trained model
     model = pickle.load(open('resources/models/ALS_model.pkl', 'rb'))
 
@@ -148,6 +150,7 @@ def collab_model(movie_list,top_n=10):
         #recommended_movies_with_info.append((movie_title, genres, predicted_rating))
         genres = movies_df[movies_df['movieId'] == movie_id]['genres'].values[0]
         recommended_movies.append((movies_df[movies_df['movieId'] == movie_id]['title'].values[0],genres,predicted_rating))
+
         
     return recommended_movies
 

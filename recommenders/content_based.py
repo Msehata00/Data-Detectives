@@ -32,8 +32,9 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 # Importing data
 movies = pd.read_csv('resources/data/movies.csv', sep = ',')
@@ -92,6 +93,9 @@ def content_model(movie_list,top_n=10):
     # Get the indices of the selected favorite movies
     idx_movies = movies[movies['title'].isin(movie_list)].index.tolist()
 
+    if not idx_movies:
+        raise ValueError("No movies from movie_list found in the dataset. Please check the movie titles.")
+
     # Calculate similarity scores between the selected favorite movies and all other movies
     similarity_scores = cosine_similarity(tfidf_matrix[idx_movies], tfidf_matrix)
 
@@ -101,8 +105,7 @@ def content_model(movie_list,top_n=10):
     # Get the indices of the top_n recommended movies based on the average similarity scores
     top_n_indices = avg_similarity_scores.argsort()[::-1][:top_n]
 
-    # Get the titles of the top_n recommended movies
-    recommended_movies = movies.iloc[top_n_indices]['title'].tolist()
+    # Get the titles and genres of the top_n recommended movies
     recommended_movies = movies.iloc[top_n_indices][['title', 'genres']].values.tolist()
     recommended_ratings = []
     for movie_title, _ in recommended_movies:
@@ -113,5 +116,37 @@ def content_model(movie_list,top_n=10):
             recommended_ratings.append(average_rating)
         else:
             recommended_ratings.append(None)
-    recommended_movies = [(movie_title, genres, rating) for (movie_title, genres), rating in zip(recommended_movies, recommended_ratings)]        
-    return recommended_movies
+    recommended_movies_with_ratings = [(movie_title, genres, rating) for (movie_title, genres), rating in zip(recommended_movies, recommended_ratings)]
+
+    return recommended_movies_with_ratings
+
+movie_list = []
+# Assuming you have a test set with known ratings (actual_ratings) and a model (content_model)
+# Get the recommended movies and predicted ratings from the model
+try:
+    recommended_movies, recommended_ratings = content_model(movie_list, top_n=10)
+    print("Recommended Movies with Ratings:")
+    for movie_title, genres, rating in recommended_movies:
+        print(f"Movie: {movie_title}, Genres: {genres}, Predicted Rating: {rating}")
+except ValueError as e:
+    print(f"Error: {e}")
+
+
+def hyperparameter_tuning(movie_data):
+    # Define the hyperparameter grid for the TfidfVectorizer
+    param_grid = {
+        'max_features': [1000, 2000, 3000],  # The maximum number of features (vocabulary size)
+        'min_df': [1, 2, 3],  # The minimum number of documents a word must be present in to be kept
+        'max_df': [0.7, 0.8, 0.9],  # The maximum percentage of documents a word can be present in to be kept
+    }
+
+    # Initialize the TfidfVectorizer and GridSearchCV
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+    grid_search = GridSearchCV(tfidf_vectorizer, param_grid, cv=5)
+
+    # Fit the GridSearchCV on the movie data to find the best hyperparameters
+    grid_search.fit(movie_data['description'])
+
+    # Get the best hyperparameters
+    best_params = grid_search.best_params_
+    return best_params
