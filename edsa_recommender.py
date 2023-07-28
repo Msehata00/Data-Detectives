@@ -268,7 +268,7 @@ def main():
     # DO NOT REMOVE the 'Recommender System' option below, however,
     # you are welcome to add more options to enrich your app.
     #page_options = ["Welcome","Recommender System","Analysis","Solution Overview",'MovieList']
-    page_options = ["Welcome", "Recommender System", "Solution Overview", "MovieList","Rating & Review"]
+    page_options = ["Welcome","Meet our team", "Recommender System", "Solution Overview", "MovieList","Rating & Review"]
     st.session_state.page_selection = st.sidebar.selectbox("Choose Option", page_options)
     # -------------------------------------------------------------------
     # ----------- !! THIS CODE MUST NOT BE ALTERED !! -------------------
@@ -350,16 +350,19 @@ def main():
         
 
     if st.session_state.page_selection == "Welcome":
-        st.title("Welcome to the Data Detectives Movie Recommender Engine")
+        st.title("Welcome to the Data Detectives: ReelWise app")
         
         # Display the image
-        st.image('resources/imgs/Home.jpg', use_column_width=True)
+        #st.image('resources/imgs/Home.jpg', use_column_width=True)
+        st.image('resources/imgs/Data_Detectives_Logo-removebg-preview.png', 
+                 #caption="Photo Credit: Hello I'm, Data Detective",
+                 use_column_width=True)
         
         # Display formatted text using Markdown
         st.markdown("""
-        # Movie Recommendation Challenge
+        # ReelWise App
         
-        Welcome to our Movie Recommender Engine! We hope you'll find some great movie recommendations here.
+        Welcome to our Movie Recommender App! We hope you'll find some great movie recommendations here.
         
         ### How it works:
         
@@ -367,23 +370,13 @@ def main():
         2. Choose either Content Based Filtering or Collaborative Based Filtering.
         3. Click the "Recommend" button to get personalized movie recommendations.
         
-        ### About us:
         
-        We are the Unsupervised ML team at EDSA, working on this amazing Movie Recommender Engine.
-        
-        - Mosibudi Sehata
-        - Thebe Dikobo
-        - Ayanda Witboi
-        - Ayanda Ndlovu
-        - Katsila Malepe
-        - Maseru Mashiloane
-        - Vasco Eti
         
         Happy movie watching!
         """)
 
         # Display the second image
-        st.image('resources/imgs/Image2.jpg', use_column_width=True)
+        st.image('resources/imgs/Image2.png', use_column_width=True)
         
         # Display the third image
         st.image('resources/imgs/Image3.jpg', use_column_width=True)
@@ -403,9 +396,96 @@ def main():
     if st.session_state.page_selection == "MovieList":
         initialize_lists()
         movie_list_page()
-    elif st.session_state.page_selection == "Rating & Review":
+    if st.session_state.page_selection == "Rating & Review":
         rating_page()
+    
+    if st.session_state.page_selection == "Meet our team":
+        #st.title("Data Detective team")
+        st.subheader("Meet the Data Detectives Team")
+        #st.markdown("<br><br>", unsafe_allow_html=True)
+        st.markdown("",unsafe_allow_html=True)
+        #st.write("  ")
+        st.markdown(
+            """
+            <style>
+            .center {
+                display: flex;
+                justify-content: center;
+                margin-top: -100px; /* Adjust the value to shift the image as desired */
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        # Display the image with the 'center' class
+        # st.image('resources/imgs/Data_Detectives_Logo-removebg-preview.png', 
+                 #caption="Photo Credit: Hello I'm, Data Detective",
+                 #use_column_width=True)
+        
 
+        team_members = {
+        #"Team Member 1": "Data Science Lead\nResponsible for overseeing data science projects and guiding the team to deliver effective solutions.",
+        "Maseru": "Machine Learning Engineer\nDeveloping and implementing machine learning models for various projects.",
+        "AyandaN": "Data Analyst\nAnalyzing and interpreting data to provide insights for business decisions.",
+        "Thebe": "Data Engineer\nBuilding and maintaining the data infrastructure and pipelines for data processing.",
+        "Vasco": "AI Researcher\nExploring cutting-edge AI techniques and conducting research to improve the team's capabilities.",
+        "Katsila": "Data Visualization Specialist\nCreating interactive and informative data visualizations to communicate insights effectively.",
+        "AyandaW": "Natural Language Processing (NLP) Specialist\nWorking on NLP projects and developing language models for text analysis.",
+    }
+        st.image('resources/imgs/Moshibudi.png', caption="Moshibudi: Team Lead", width=200)
+        st.write("Team Lead: Responsible for overseeing data science projects, providing technical guidance to the team, and ensuring the successful delivery of data-driven solutions. They collaborate with stakeholders to define project objectives, lead model development, and interpret results for actionable insights.")
+        css_style = """
+        <style>
+        .image-with-description {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .image-with-description img {
+            width: 200px;
+            height: 100px; /* Set the desired height for the image */
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        </style>
+        """
+        #st.markdown(css_style, unsafe_allow_html=True)
+
+
+        left_description = True
+        # Create two columns for the second row
+        col1, col2 = st.columns(2)
+        for idx, (team_member, job_description) in enumerate(team_members.items()):
+            col1, col2 = st.columns([1, 2])
+
+            if idx % 2 == 0:
+                # Even index, description on the left, image on the right
+                with col1:
+                    st.markdown("<br><br><br>", unsafe_allow_html=True)
+                    #st.write("Job Description:")
+                    st.write(job_description)
+                    st.markdown("<br><br><br>", unsafe_allow_html=True)
+                with col2:
+                    st.markdown("<br><br><br>", unsafe_allow_html=True)
+                    st.image(f'resources/imgs/{team_member.split()[0]}.png', caption=team_member, width=200)
+                    #st.markdown("<br><br><br>", unsafe_allow_html=True)
+            else:
+                # Odd index, image on the left, description on the right
+                with col1:
+                    
+                    st.image(f'resources/imgs/{team_member.split()[0]}.png', caption=team_member, width=200)
+                    
+                with col2:
+                    st.markdown("<br><br><br>", unsafe_allow_html=True)
+                    #st.write("Job Description:")
+                    st.write(job_description)
+                    st.markdown("<br><br><br>", unsafe_allow_html=True)
+
+
+        
 
 if __name__ == '__main__':
     main()
