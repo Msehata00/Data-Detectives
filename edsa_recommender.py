@@ -50,7 +50,7 @@ from recommenders.content_based import content_model
 # st.write("App Mode:", app_mode)
 # st.write("Command Line Args:", command_line_args)
 
-experiment = Experiment(api_key="5GQUeJbYop4ZaqBrtCQ12YaXh", project_name="unsupervised", workspace="vascoeti")
+#experiment = Experiment(api_key="5GQUeJbYop4ZaqBrtCQ12YaXh", project_name="unsupervised", workspace="vascoeti")
 
 
 # Data Loading
